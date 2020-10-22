@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="headerSize">30sp</dimen>
+    <dimen name="buttonSize">18sp</dimen>
+</resources>
