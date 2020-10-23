@@ -17,4 +17,8 @@ public class Global extends Application {
     public static List<String> defaultSpotTypes() {
         return Arrays.asList("Nature Spot", "Food Spot", "Urban Spot");
     }
+
+    public static List<String> defaultLocations() {
+        return Arrays.asList("Wellington", "Auckland", "Christchurch");
+    }
 }

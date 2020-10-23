@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Act_Register">
+
+    <TextView
+        android:id="@+id/lblName2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans"
+        android:letterSpacing="0.05"
+        android:text="@string/edit_spot_locations"
+        android:textAppearance="@style/mainHeader"
+        android:textSize="@dimen/headerSize"
+        app:autoSizeMaxTextSize="20pt"
+        app:autoSizeMinTextSize="20pt"
+        app:layout_constraintBottom_toTopOf="@+id/spnLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:targetApi="lollipop" />
+
+    <ImageView
+        android:id="@+id/imgbg"
+        android:layout_width="332dp"
+        android:layout_height="102dp"
+        android:layout_marginTop="632dp"
+        android:alpha="1"
+        android:scaleX="1.2"
+        android:src="@drawable/csbg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <Button
+        android:id="@+id/btnUpdate"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@color/greyTheme"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="@string/update"
+        android:textSize="@dimen/buttonSize"
+        app:layout_constraintBottom_toTopOf="@+id/btnDelete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSpotLocation" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@color/greyTheme"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="@string/delete"
+        android:textSize="@dimen/buttonSize"
+        app:layout_constraintBottom_toTopOf="@+id/imgbg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUpdate" />
+
+    <Spinner
+        android:id="@+id/spnLocation"
+        style="@android:style/Widget.Material.Spinner.Underlined"
+        android:layout_width="270dp"
+        android:layout_height="46dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtSpotLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblName2" />
+
+    <EditText
+        android:id="@+id/txtSpotLocation"
+        android:layout_width="270dp"
+        android:layout_height="46dp"
+        android:ems="15"
+        android:fontFamily="@font/open_sans"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        android:text="@string/spot_location_hint"
+        android:textColorHighlight="@color/redTheme"
+        android:textColorHint="@color/greyTheme"
+        android:textColorLink="@color/redTheme"
+        android:textCursorDrawable="@color/redTheme"
+        app:layout_constraintBottom_toTopOf="@+id/btnUpdate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spnLocation" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

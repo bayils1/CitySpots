@@ -10,17 +10,22 @@
     <string name="test_login">Test Login</string>
     <string name="register">Register</string>
     <string name="spot_name">Spot Name</string>
-    <string name="spot_type">Spot Type</string>
     <string name="spot_tag">#SpotTag</string>
-    <string name="location">Location</string>
     <string name="add">Add</string>
 
-
+    <string name="edit_spot_types">Edit Custom Spot Types</string>
+    <string name="edit_spot_locations">Edit Custom Spot Locations</string>
     <string name="password_hint">PASSWORD</string>
     <string name="username_hint">USERNAME</string>
     <string name="home_city_hint">HOME CITY</string>
     <string name="full_name_hint">FULL NAME</string>
+    <string name="spot_type_hint">SPOT TYPE</string>
+    <string name="spot_location_hint">SPOT LOCATION</string>
+    <string name="home_city">Home City:</string>
+    <string name="full_name">Full Name:</string>
     <string name="filter_by">Filter by:</string>
+    <string name="edit_spot">Edit Spot</string>
+    <string name="new_spot">Create New Spot</string>
     <string name="spot_settings">SPOT SETTINGS</string>
     <string name="user_settings">USER SETTINGS</string>
     <string name="no_spots_message">No spots yet!</string>

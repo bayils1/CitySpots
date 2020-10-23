@@ -78,7 +78,13 @@ public class Act_Landing extends AppCompatActivity {
 
         );
 
-        spinnerArray = db.getUserSpotTypes(currentUser.getUserID());
+        if(currentUser.getDefaultSpotFilter().equalsIgnoreCase("Type")){
+            spinnerArray = db.getUserSpotTypes(currentUser.getUserID());
+        }
+        else{
+            spinnerArray = db.getUserLocationTypes(currentUser.getUserID());
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, spinnerArray);
 
@@ -99,7 +105,12 @@ public class Act_Landing extends AppCompatActivity {
                     parentLayout.addView(text);
                 } else {
                     parentLayout.removeAllViews();
-                    spotList = db.getUserSpotBySpotType(currentUser.getUserID(), spotType.getSelectedItem().toString());
+                    if(currentUser.getDefaultSpotFilter().equalsIgnoreCase("Type")) {
+                        spotList = db.getUserSpotBySpotType(currentUser.getUserID(), spotType.getSelectedItem().toString());
+                    }
+                    else{
+                        spotList = db.getUserSpotBySpotLocation(currentUser.getUserID(), spotType.getSelectedItem().toString());
+                    }
                     Spot s = new Spot(spotList.get(0));
                     StringBuilder textHTML = new StringBuilder();
                     byte[] photobyte;

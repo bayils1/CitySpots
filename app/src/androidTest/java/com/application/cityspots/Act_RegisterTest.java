@@ -17,10 +17,11 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-@SuppressWarnings("EmptyMethod")
+@SuppressWarnings({"EmptyMethod", "deprecation"})
 @RunWith(AndroidJUnit4.class)
 public class Act_RegisterTest {
 
+    @SuppressWarnings("deprecation")
     @Rule
     public final ActivityTestRule<Act_Register> regActivity = new ActivityTestRule<>(Act_Register.class);
     private String username;

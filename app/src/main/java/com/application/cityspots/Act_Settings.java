@@ -24,6 +24,8 @@ public class Act_Settings extends AppCompatActivity {
     EditText fullname;
     EditText city;
     Button update;
+    Button updateSpotTypes;
+    Button updateLocationTypes;
     String errorMessage = "-1";
     DBHandler db;
     List<String> spinnerArray = new ArrayList<String>();
@@ -40,7 +42,8 @@ public class Act_Settings extends AppCompatActivity {
         fullname = findViewById(R.id.txtFullName);
         city = findViewById(R.id.txtCity);
         update = findViewById(R.id.btnUpdate);
-
+        updateSpotTypes = findViewById(R.id.btnEditSpotTypes);
+updateLocationTypes = findViewById(R.id.btnEditSpotLocations);
         spotFilter = findViewById(R.id.spnSpotFilter);
         fullname.setText(currentUser.getFullName());
         city.setText(currentUser.getCity());
@@ -88,6 +91,7 @@ public class Act_Settings extends AppCompatActivity {
                             errorMessage = "-1";
                             currentUser.setCity(city.getText().toString());
                             currentUser.setFullName(fullname.getText().toString());
+                            currentUser.setDefaultSpotFilter(spotFilter.getSelectedItem().toString());
                             Log.println(Log.DEBUG, "Updated Fullname", currentUser.getFullName());
                             Log.println(Log.DEBUG, "Updated City", currentUser.getCity());
                             try {
@@ -111,6 +115,22 @@ public class Act_Settings extends AppCompatActivity {
                     }
                 });
 
+        updateSpotTypes.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Act_Settings.this, Act_EditSpotTypes.class);
+                intent.putExtra("currentUser", currentUser);
+                startActivity(intent);
+            }
+        });
+        updateLocationTypes.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Act_Settings.this, Act_EditSpotLocations.class);
+                intent.putExtra("currentUser", currentUser);
+                startActivity(intent);
+            }
+        });
 
     }
 }

@@ -16,7 +16,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecation"})
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class Act_MainActivityLoginTest {

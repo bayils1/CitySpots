@@ -28,27 +28,6 @@
         app:layout_constraintTop_toBottomOf="@+id/cameraImage" />
 
     <EditText
-        android:id="@+id/txtSpotLocation"
-        android:layout_width="270dp"
-        android:layout_height="46dp"
-        android:ems="15"
-        android:fontFamily="@font/open_sans"
-        android:hint="@string/location"
-        android:imeOptions="actionDone"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        android:singleLine="true"
-        android:textColorHighlight="@color/redTheme"
-        android:textColorHint="@color/greyTheme"
-        android:textColorLink="@color/redTheme"
-        android:textCursorDrawable="@color/redTheme"
-        app:layout_constraintBottom_toTopOf="@+id/btnEdit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSpotTag" />
-
-    <EditText
         android:id="@+id/txtSpotTag"
         android:layout_width="270dp"
         android:layout_height="46dp"
@@ -63,7 +42,7 @@
         android:textColorHint="@color/greyTheme"
         android:textColorLink="@color/redTheme"
         android:textCursorDrawable="@color/redTheme"
-        app:layout_constraintBottom_toTopOf="@+id/txtSpotLocation"
+        app:layout_constraintBottom_toTopOf="@+id/spnLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,9 +53,7 @@
         android:layout_width="332dp"
         android:layout_height="102dp"
         android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginEnd="18dp"
-        android:layout_marginRight="18dp"
         android:alpha="0.2"
         android:scaleX="1.2"
         android:src="@drawable/csbg"
@@ -92,17 +69,35 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/redTheme"
+        app:cardBackgroundColor="@color/greenTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/txtNewSpotBanner"
+            android:layout_width="326dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="48dp"
+            android:letterSpacing="0.06"
+            android:fontFamily="@font/open_sans"
+            android:gravity="fill_vertical"
+            android:paddingTop="15dp"
+            android:paddingBottom="10dp"
+            android:text="@string/new_spot"
+            android:textColor="@color/activityBackground"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="@color/greyTheme"
+            android:textColorLink="@color/greyTheme"
+            android:textSize="14sp"
+            android:typeface="normal" />
+
         <Button
             android:id="@+id/btnCamera"
-            android:layout_width="48dp"
+            android:layout_width="47dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:layout_marginEnd="1dp"
-            android:layout_marginRight="1dp"
             android:fontFamily="serif-monospace"
             android:text="@string/cameraSymbol"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -129,17 +124,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSpotLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/spnLocation" />
 
     <Spinner
         android:id="@+id/spnType"
-        style="@style/SpinnerTextViewItem"
-        android:layout_width="266dp"
-        android:layout_height="34dp"
+        style="@android:style/Widget.Material.Spinner.Underlined"
+        android:layout_width="270dp"
+        android:layout_height="46dp"
         app:layout_constraintBottom_toTopOf="@+id/txtSpotTag"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtSpotName" />
+
+    <Spinner
+        android:id="@+id/spnLocation"
+        style="@android:style/Widget.Material.Spinner.Underlined"
+        android:layout_width="270dp"
+        android:layout_height="46dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEdit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSpotTag" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

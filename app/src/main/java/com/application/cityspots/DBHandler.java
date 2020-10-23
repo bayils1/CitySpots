@@ -69,19 +69,24 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private static final String createSpotTypeTable = "create table " + TABLE_SpotType +
             "(" + COLUMN_SpotTypeID + " integer primary key autoincrement, " +
-            COLUMN_SpotTypeName + " text not null, " +
+            COLUMN_SpotTypeName + " text not null unique, " +
             COLUMN_FKUserID + " text);";
 
     private static final String createSpotLocationTable = "create table " + TABLE_SpotLocation +
             "(" + COLUMN_SpotLocationID + " integer primary key autoincrement, " +
-            COLUMN_SpotLocationName + " text not null, " +
+            COLUMN_SpotLocationName + " text not null unique, " +
             COLUMN_FKUserID + " text);";
 
-
+    /*****************************************
+     Constructor
+     *****************************************/
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /*****************************************
+     OnCreate/Upgrade
+     *****************************************/
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.println(Log.DEBUG, "Create User Table", createUserTable);
@@ -98,6 +103,23 @@ public class DBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_SpotType);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_SpotLocation);
         onCreate(sqLiteDatabase);
+    }
+
+
+    /*****************************************
+     User Functions
+     *****************************************/
+    //Create
+    public void createUser(User newUser) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FullName, newUser.getFullName());
+        values.put(COLUMN_Username, newUser.getUsername());
+        values.put(COLUMN_Password, newUser.getPassword());
+        values.put(COLUMN_City, newUser.getCity());
+        values.put(COLUMN_DefaultSpotFilter, newUser.getDefaultSpotFilter());
+        db.insert(TABLE_User, null, values);
+        db.close();
     }
 
     public void createTestUser() {
@@ -119,6 +141,8 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Read
+
     public boolean validUser(String username) {
         //noinspection UnusedAssignment
         int valid = 0;
@@ -130,20 +154,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         Log.println(Log.DEBUG, "Valid Count", valid + "");
         return valid == 1;
-    }
-
-    public int spotCount(String userID) {
-        //noinspection UnusedAssignment
-        int valid = 0;
-        SQLiteDatabase db = this.getReadableDatabase();
-        SQLiteStatement state = db.compileStatement("select count(*) from " + TABLE_Spot +
-                " where " + COLUMN_FKUserID + "=" + userID + "");
-
-        valid = Integer.parseInt(state.simpleQueryForString());
-        state.close();
-        db.close();
-        Log.println(Log.DEBUG, "Valid Count", valid + "");
-        return valid;
     }
 
     public boolean validPassword(String username, String password) {
@@ -185,6 +195,40 @@ public class DBHandler extends SQLiteOpenHelper {
         return returnUser;
     }
 
+    //Update
+
+    public void updateUser(User user) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FullName, user.getFullName());
+        values.put(COLUMN_City, user.getCity());
+        values.put(COLUMN_DefaultSpotFilter, user.getDefaultSpotFilter());
+        String where = COLUMN_UserID + " = ?";
+        String[] whereArgs = new String[]{user.getUserID()};
+        db.update(TABLE_User, values, where, whereArgs);
+        db.close();
+    }
+
+
+    /*****************************************
+     Spot Functions
+     *****************************************/
+
+    //Create
+    public void createSpot(Spot newSpot, User currentUser) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SpotName, newSpot.getSpotName());
+        values.put(COLUMN_SpotType, newSpot.getSpotType());
+        values.put(COLUMN_Tag, newSpot.getTag());
+        values.put(COLUMN_Image, newSpot.getByteArray());
+        values.put(COLUMN_Location, newSpot.getLocation());
+        values.put(COLUMN_FKUserID, currentUser.getUserID());
+        db.insert(TABLE_Spot, null, values);
+        db.close();
+    }
+
+    //Read
     public Spot getSpot(String spotID) {
         Spot returnSpot = new Spot();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -217,6 +261,20 @@ public class DBHandler extends SQLiteOpenHelper {
         return returnSpot;
     }
 
+    public int spotCount(String userID) {
+        //noinspection UnusedAssignment
+        int valid = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteStatement state = db.compileStatement("select count(*) from " + TABLE_Spot +
+                " where " + COLUMN_FKUserID + "=" + userID + "");
+
+        valid = Integer.parseInt(state.simpleQueryForString());
+        state.close();
+        db.close();
+        Log.println(Log.DEBUG, "Valid Count", valid + "");
+        return valid;
+    }
+
     public List<String> getUserSpotTypes(String userID) {
         List<String> returnSpotTypes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -232,6 +290,23 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         c.close();
         return returnSpotTypes;
+    }
+
+    public List<String> getUserLocationTypes(String userID) {
+        List<String> returnSpotLocations = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select DISTINCT " + COLUMN_Location + " from " + TABLE_Spot +
+                " where " + COLUMN_FKUserID + "=" + userID + "";
+        Log.println(Log.DEBUG, "Query", query);
+        //null is all columns
+        returnSpotLocations.add("All Spot Locations");
+        Cursor c = db.rawQuery(query, null);
+        while (c.moveToNext()) {
+            returnSpotLocations.add(c.getString(c.getColumnIndex(COLUMN_Location)));
+        }
+        db.close();
+        c.close();
+        return returnSpotLocations;
     }
 
     public List<Spot> getUserSpotBySpotType(String userID, String spinnerFilter) {
@@ -289,7 +364,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String query = "select " + columns + " from " + TABLE_Spot +
                 " where " + COLUMN_FKUserID + "=" + userID + "";
 
-        if (!(spinnerFilter.equalsIgnoreCase("All Locations")))
+        if (!(spinnerFilter.equalsIgnoreCase("All Spot Locations")))
             query = query + " AND " + COLUMN_Location + "='" + spinnerFilter + "'";
         Log.println(Log.DEBUG, "Spinner", query);
 
@@ -320,32 +395,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return returnSpotList;
     }
 
-    public void createUser(User newUser) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_FullName, newUser.getFullName());
-        values.put(COLUMN_Username, newUser.getUsername());
-        values.put(COLUMN_Password, newUser.getPassword());
-        values.put(COLUMN_City, newUser.getCity());
-        values.put(COLUMN_DefaultSpotFilter, newUser.getDefaultSpotFilter());
-        db.insert(TABLE_User, null, values);
-        db.close();
-    }
-
-    public void createSpot(Spot newSpot, User currentUser) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_SpotName, newSpot.getSpotName());
-        values.put(COLUMN_SpotType, newSpot.getSpotType());
-        values.put(COLUMN_Tag, newSpot.getTag());
-        values.put(COLUMN_Image, newSpot.getByteArray());
-        values.put(COLUMN_Location, newSpot.getLocation());
-        values.put(COLUMN_FKUserID, currentUser.getUserID());
-        db.insert(TABLE_Spot, null, values);
-        db.close();
-    }
-
+    //Update
     public void updateSpot(Spot updateSpot) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -360,35 +410,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateUser(User user) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_FullName, user.getFullName());
-        values.put(COLUMN_City, user.getCity());
-        String where = COLUMN_UserID + " = ?";
-        String[] whereArgs = new String[]{user.getUserID()};
-        db.update(TABLE_User, values, where, whereArgs);
-        db.close();
-    }
-
-    public void createSpotType(Type newSpotType) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_SpotTypeName, newSpotType.getTypeName());
-        values.put(COLUMN_FKUserID, newSpotType.getUserID());
-        db.insert(TABLE_SpotType, null, values);
-        db.close();
-    }
-
-    public void createSpotLocation(Location newSpotLocation, User currentUser) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_SpotTypeName, newSpotLocation.getLocationName());
-        values.put(COLUMN_FKUserID, currentUser.getUserID());
-        db.insert(TABLE_SpotLocation, null, values);
-        db.close();
-    }
-
+    //Delete
     public void deleteSpot(String spotID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String deleteStatement = "DELETE FROM " +
@@ -400,6 +422,138 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
 
+    /*****************************************
+     Spot Location Functions
+     *****************************************/
+    //Create
+    //Read
+    //Update
+    //Delete
+
+    public void createSpotLocation(Location newSpotLocation) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SpotLocationName, newSpotLocation.getLocationName());
+        values.put(COLUMN_FKUserID, newSpotLocation.getUserID());
+        db.insert(TABLE_SpotLocation, null, values);
+        db.close();
+    }
+
+    public void updateSpotLocation(Location updateSpotLocation, String oldSpotLocation) {
+
+        List<Spot> userSpots = getUserSpotBySpotLocation(updateSpotLocation.getUserID(), oldSpotLocation);
+        for (Spot currentSpot : userSpots) {
+            currentSpot.setLocation(updateSpotLocation.getLocationName());
+            updateSpot(currentSpot);
+        }
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SpotLocationName, updateSpotLocation.getLocationName());
+        values.put(COLUMN_FKUserID, updateSpotLocation.getUserID());
+        String where = COLUMN_SpotLocationID + " = ?";
+        String[] whereArgs = new String[]{updateSpotLocation.getLocationID()};
+        db.update(TABLE_SpotLocation, values, where, whereArgs);
+        db.close();
+    }
+
+    public List<Location> getLocations(String userID) {
+        List<Location> returnLocationList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + TABLE_SpotLocation +
+                " where " + COLUMN_FKUserID + "=" + userID + "";
+
+
+        Log.println(Log.DEBUG, "Query", query);
+        //null is all columns
+        Cursor c = db.rawQuery(query, null);
+
+        while (c.moveToNext()) {
+            Location tempLocation = new Location();
+            tempLocation.setLocationID(c.getString(c.getColumnIndex(COLUMN_SpotLocationID)));
+            tempLocation.setLocationName(c.getString(c.getColumnIndex(COLUMN_SpotLocationName)));
+            tempLocation.setUserID(c.getString(c.getColumnIndex(COLUMN_FKUserID)));
+            returnLocationList.add(tempLocation);
+        }
+        db.close();
+        c.close();
+        return returnLocationList;
+    }
+
+    public boolean validSpotLocationDelete(String userID, String spotLocation) {
+        //noinspection UnusedAssignment
+        int valid = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteStatement state = db.compileStatement("select count(*) from " + TABLE_Spot +
+                " where " + COLUMN_FKUserID + "='" + userID +
+                "' and " + COLUMN_Location + "='" + spotLocation + "'");
+        valid = Integer.parseInt(state.simpleQueryForString());
+        state.close();
+        db.close();
+        Log.println(Log.DEBUG, "Valid Count", valid + "");
+        return valid == 0;
+    }
+
+    public void deleteSpotLocation(String spotLocationID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String deleteStatement = "DELETE FROM " +
+                TABLE_SpotLocation + " WHERE " +
+                COLUMN_SpotLocationID + " = '" +
+                spotLocationID + "';";
+        db.execSQL(deleteStatement);
+        db.close();
+    }
+    public List<Location> getSpotLocations(String userID) {
+        List<Location> returnSpotLocationList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + TABLE_SpotLocation +
+                " where " + COLUMN_FKUserID + "=" + userID + "";
+
+        Log.println(Log.DEBUG, "Query", query);
+        //null is all columns
+        Cursor c = db.rawQuery(query, null);
+
+        while (c.moveToNext()) {
+            Location tempLocation = new Location();
+            tempLocation.setLocationID(c.getString(c.getColumnIndex(COLUMN_SpotLocationID)));
+            tempLocation.setLocationName(c.getString(c.getColumnIndex(COLUMN_SpotLocationName)));
+            tempLocation.setUserID(c.getString(c.getColumnIndex(COLUMN_FKUserID)));
+            returnSpotLocationList.add(tempLocation);
+        }
+        db.close();
+        c.close();
+        return returnSpotLocationList;
+    }
+
+    public boolean validSpotLocation(Location spotLocation) {
+        //noinspection UnusedAssignment
+        int valid = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteStatement state = db.compileStatement("select count(*) from " + TABLE_SpotLocation +
+                " where " + COLUMN_SpotLocationName + "='" + spotLocation.getLocationName() + "' and "
+                + COLUMN_FKUserID + "='" + spotLocation.getUserID() + "'");
+        valid = Integer.parseInt(state.simpleQueryForString());
+        state.close();
+        db.close();
+        Log.println(Log.DEBUG, "Valid Count", valid + "");
+        return valid == 0;
+    }
+    /*****************************************
+     Spot Type Functions
+     *****************************************/
+    //Create
+    public void createSpotType(Type newSpotType) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SpotTypeName, newSpotType.getTypeName());
+        values.put(COLUMN_FKUserID, newSpotType.getUserID());
+        db.insert(TABLE_SpotType, null, values);
+        db.close();
+    }
+
+    //Read
     public List<Type> getSpotTypes(String userID) {
         List<Type> returnSpotTypeList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -423,4 +577,63 @@ public class DBHandler extends SQLiteOpenHelper {
         c.close();
         return returnSpotTypeList;
     }
+
+    //Update
+    public void updateSpotType(Type updateSpotType, String oldSpotType) {
+
+        List<Spot> userSpots = getUserSpotBySpotType(updateSpotType.getUserID(), oldSpotType);
+        for (Spot currentSpot : userSpots) {
+            currentSpot.setSpotType(updateSpotType.getTypeName());
+            updateSpot(currentSpot);
+        }
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SpotTypeName, updateSpotType.getTypeName());
+        values.put(COLUMN_FKUserID, updateSpotType.getUserID());
+        String where = COLUMN_SpotTypeID + " = ?";
+        String[] whereArgs = new String[]{updateSpotType.getTypeID()};
+        db.update(TABLE_SpotType, values, where, whereArgs);
+        db.close();
+    }
+
+    public boolean validSpotTypeDelete(String userID, String SpotType) {
+        //noinspection UnusedAssignment
+        int valid = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteStatement state = db.compileStatement("select count(*) from " + TABLE_Spot +
+                " where " + COLUMN_FKUserID + "='" + userID +
+                "' and " + COLUMN_SpotType + "='" + SpotType + "'");
+        valid = Integer.parseInt(state.simpleQueryForString());
+        state.close();
+        db.close();
+        Log.println(Log.DEBUG, "Valid Count", valid + "");
+        return valid == 0;
+    }
+
+    public boolean validSpotType(Type spotType) {
+        //noinspection UnusedAssignment
+        int valid = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteStatement state = db.compileStatement("select count(*) from " + TABLE_SpotType +
+                " where " + COLUMN_SpotTypeName + "='" + spotType.getTypeName() + "' and "
+                + COLUMN_FKUserID + "='" + spotType.getUserID() + "'");
+        valid = Integer.parseInt(state.simpleQueryForString());
+        state.close();
+        db.close();
+        Log.println(Log.DEBUG, "Valid Count", valid + "");
+        return valid == 0;
+    }
+
+    //Delete
+    public void deleteSpotType(String spotTypeID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String deleteStatement = "DELETE FROM " +
+                TABLE_SpotType + " WHERE " +
+                COLUMN_SpotTypeID + " = '" +
+                spotTypeID + "';";
+        db.execSQL(deleteStatement);
+        db.close();
+    }
+
 }

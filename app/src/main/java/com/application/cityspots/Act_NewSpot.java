@@ -33,7 +33,6 @@ public class Act_NewSpot extends AppCompatActivity {
     ImageView cameraImage;
     EditText spotName;
     EditText spotTag;
-    EditText spotLocation;
     Bitmap photo;
     Spot spot;
     Button addSpot;
@@ -42,10 +41,12 @@ public class Act_NewSpot extends AppCompatActivity {
     DBHandler db;
     Spinner spotType;
     List<String> spotTypes = new ArrayList<String>();
-
-
-    
     ArrayAdapter<String> typeAdapter;
+    Spinner spotLocation;
+    List<String> spotLocations = new ArrayList<String>();
+    ArrayAdapter<String> locationAdapter;
+
+
     boolean imageTaken;
     byte[] byteArray;
     User currentUser;
@@ -56,16 +57,19 @@ public class Act_NewSpot extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_spot);
+        currentUser = (User) getIntent().getSerializableExtra("currentUser");
+        db = new DBHandler(this);
+
+        intialiseSpinners();
+
         cameraImage = this.findViewById(R.id.cameraImage);
         photoButton = this.findViewById(R.id.btnCamera);
         addSpot = this.findViewById(R.id.btnEdit);
         spotName = this.findViewById(R.id.txtSpotName);
         spotTag = this.findViewById(R.id.txtSpotTag);
-        spotLocation = this.findViewById(R.id.txtSpotLocation);
 
 
-        currentUser = (User) getIntent().getSerializableExtra("currentUser");
-        db = new DBHandler(this);
+
         photoButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -79,30 +83,7 @@ public class Act_NewSpot extends AppCompatActivity {
             }
         });
 
-        spotType = this.findViewById(R.id.spnType);
-        for (String defaultType : Global.defaultSpotTypes()){
-            spotTypes.add(defaultType);
-        }
-        try {
-            List<Type> userSpotTypes = db.getSpotTypes(currentUser.getUserID());
-            for (Type userType : userSpotTypes) {
-                spotTypes.add(userType.getTypeName());
-            }
-        } catch (Exception e) {
-        }
-        typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spotTypes);
-        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spotType.setAdapter(typeAdapter);
-        spotType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         addSpot.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -113,7 +94,7 @@ public class Act_NewSpot extends AppCompatActivity {
                     errorMessage = "Please enter spot type";
                 } else if (spotTag.getText().toString().isEmpty()) {
                     errorMessage = "Please enter spot tag";
-                } else if (spotLocation.getText().toString().isEmpty()) {
+                } else if (spotLocation.getSelectedItem().toString().isEmpty()) {
                     errorMessage = "Please enter the location.";
                 } else if (!imageTaken) {
                     errorMessage = "Please take an Image";
@@ -121,9 +102,9 @@ public class Act_NewSpot extends AppCompatActivity {
                     errorMessage = "-1";
                     Log.println(Log.DEBUG, "NewSpot", spotType.getSelectedItem().toString());
                     if (spotType.getSelectedItem().toString().contains("Nature")) {
-                        spot = new NatureSpot(spotName.getText().toString(), spotTag.getText().toString(), spotType.getSelectedItem().toString(), photo, spotLocation.getText().toString());
+                        spot = new NatureSpot(spotName.getText().toString(), spotTag.getText().toString(), spotType.getSelectedItem().toString(), photo, spotLocation.getSelectedItem().toString());
                     } else
-                        spot = new Spot(spotName.getText().toString(), spotTag.getText().toString(), spotType.getSelectedItem().toString(), photo, spotLocation.getText().toString());
+                        spot = new Spot(spotName.getText().toString(), spotTag.getText().toString(), spotType.getSelectedItem().toString(), photo, spotLocation.getSelectedItem().toString());
 
                     try {
                         Log.println(Log.DEBUG, "NewSpot", spot.getSpotType());
@@ -160,5 +141,57 @@ public class Act_NewSpot extends AppCompatActivity {
                 imageTaken = true;
             }
         }
+    }
+
+    public void intialiseSpinners(){
+        spotType = this.findViewById(R.id.spnType);
+        for (String defaultType : Global.defaultSpotTypes()){
+            spotTypes.add(defaultType);
+        }
+        try {
+            List<Type> userSpotTypes = db.getSpotTypes(currentUser.getUserID());
+            for (Type userType : userSpotTypes) {
+                spotTypes.add(userType.getTypeName());
+            }
+        } catch (Exception e) {
+        }
+        typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spotTypes);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spotType.setAdapter(typeAdapter);
+        spotType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spotLocation = this.findViewById(R.id.spnLocation);
+        for (String defaultType : Global.defaultLocations()){
+            spotLocations.add(defaultType);
+        }
+        try {
+            List<Location> userLocations = db.getLocations(currentUser.getUserID());
+            for (Location userLocation : userLocations) {
+                spotLocations.add(userLocation.getLocationName());
+                Log.println(Log.DEBUG, "Spot Location", userLocation.getLocationName());
+            }
+        } catch (Exception e) {
+        }
+        locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spotLocations);
+        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spotLocation.setAdapter(locationAdapter);
+        spotLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }

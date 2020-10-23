@@ -32,13 +32,16 @@ public class Act_MainActivityLogin extends AppCompatActivity {
         loginButton = findViewById(R.id.btnLogin);
         registerButton = findViewById(R.id.btnRegister);
         Test = findViewById(R.id.button);
-        boolean runCreateTestUser = true;
+        boolean runCreateTestUser = false;
 
         if (runCreateTestUser){//(!db.validUser("test")) {
             db.createTestUser();
             Log.println(Log.DEBUG, "DB", "No test user existed");
-            Type testType = new Type("TestType", db.getUser("test","test").getUserID());
+            String testUserID = db.getUser("test","test").getUserID();
+            Type testType = new Type("Test Spot", testUserID);
+            Location testLocation = new Location("Test Location",testUserID);
             db.createSpotType(testType);
+            db.createSpotLocation(testLocation);
         } else
             Log.println(Log.DEBUG, "DB", "test user exists");
 
@@ -86,8 +89,9 @@ public class Act_MainActivityLogin extends AppCompatActivity {
                 }
 
         );
+
         //OnClickListener - TEST BUTTON ONLY
-         //Test.setVisibility(View.INVISIBLE);
+        //Test.setVisibility(View.INVISIBLE);
 
         Test.setOnClickListener(
                 new View.OnClickListener() {
