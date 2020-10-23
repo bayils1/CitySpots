@@ -10,4 +10,8 @@
     <style name="mainHeader" parent="TextAppearance.AppCompat">
     <item name="android:textColor">@color/greyTheme</item>
     </style>
+    <style name="SpinnerTextViewItem" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize" >18dp</item>
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
 </resources>

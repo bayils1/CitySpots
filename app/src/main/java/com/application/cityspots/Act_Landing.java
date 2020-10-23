@@ -28,6 +28,7 @@ public class Act_Landing extends AppCompatActivity {
 
     List<Spot> spotList;
     Button addSpot;
+    Button settings;
     Spinner spotType;
     User currentUser;
     LinearLayout parentLayout;
@@ -49,6 +50,20 @@ public class Act_Landing extends AppCompatActivity {
         }
         //Log.println(Log.DEBUG,"List Size", " A" + Integer.toString(db.spotCount(currentUser.getUserID())));
 
+        settings = findViewById(R.id.btnSettings);
+        settings.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        Intent intent = new Intent(Act_Landing.this, Act_Settings.class);
+                        intent.putExtra("currentUser", currentUser);
+                        startActivity(intent);
+                    }
+                }
+
+        );
+
         addSpot = findViewById(R.id.btnCamera);
         addSpot.setOnClickListener(
                 new View.OnClickListener() {
@@ -62,6 +77,7 @@ public class Act_Landing extends AppCompatActivity {
                 }
 
         );
+
         spinnerArray = db.getUserSpotTypes(currentUser.getUserID());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, spinnerArray);
@@ -83,7 +99,7 @@ public class Act_Landing extends AppCompatActivity {
                     parentLayout.addView(text);
                 } else {
                     parentLayout.removeAllViews();
-                    spotList = db.getUserSpots(currentUser.getUserID(), spotType.getSelectedItem().toString());
+                    spotList = db.getUserSpotBySpotType(currentUser.getUserID(), spotType.getSelectedItem().toString());
                     Spot s = new Spot(spotList.get(0));
                     StringBuilder textHTML = new StringBuilder();
                     byte[] photobyte;

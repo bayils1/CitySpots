@@ -12,13 +12,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
@@ -38,6 +41,9 @@ public class Act_EditSpot extends AppCompatActivity {
     Button deleteSpot;
     String errorMessage = "-1";
     DBHandler db;
+
+    //Spinner spotType;
+    List<String> spotTypes = new ArrayList<String>();
     boolean imageTaken;
     byte[] byteArray;
     User currentUser;

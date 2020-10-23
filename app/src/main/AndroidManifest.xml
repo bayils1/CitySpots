@@ -19,6 +19,7 @@
             android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".Act_NewSpot"/>
         <activity android:name=".Act_EditSpot"/>
+        <activity android:name=".Act_Settings"/>
         <activity android:name=".Act_Landing" />
         <activity android:name=".Act_MainActivityLogin">
             <intent-filter>

@@ -10,12 +10,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.closeSoftKeyboard;
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
 public class Act_NewSpotTest {
@@ -35,7 +40,7 @@ public class Act_NewSpotTest {
         spotNameTest = "SpotName";
         spotLocationTest = "SpotLocation";
         spotTagTest = "SpotTag";
-        spotTypeTest = "SpotType";
+        spotTypeTest = "Nature Spot";
     }
 
     @Test
@@ -46,12 +51,12 @@ public class Act_NewSpotTest {
         closeSoftKeyboard();
         onView(withId(R.id.txtSpotTag)).perform(typeText(spotTagTest));
         closeSoftKeyboard();
-        onView(withId(R.id.txtSpotType)).perform(clearText(), typeText(spotTypeTest));
-        closeSoftKeyboard();
+        onView(withId(R.id.spnType)).perform(click());
+        onData(anything()).atPosition(0).perform(click());
+        onView(withId(R.id.spnType)).check(matches(withSpinnerText(spotTypeTest)));
         onView(withId(R.id.txtSpotName)).check(matches(withText("SpotName")));
         onView(withId(R.id.txtSpotLocation)).check(matches(withText("SpotLocation")));
         onView(withId(R.id.txtSpotTag)).check(matches(withText("SpotTag")));
-        onView(withId(R.id.txtSpotType)).check(matches(withText("SpotType")));
     }
 
     @After

@@ -28,6 +28,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/yellowTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,14 +41,28 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="24sp" />
 
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:fontFamily="serif-monospace"
+            android:text="@string/settings_symbol"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
         <Spinner
             android:id="@+id/spnSpotType"
-            android:layout_width="match_parent"
+            android:layout_width="318dp"
             android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:layout_marginStart="40dp"
             android:layout_marginLeft="40dp"
-            android:layout_gravity="end"
-            android:spinnerMode="dropdown"
-            android:layout_marginStart="40dp" />
+            android:spinnerMode="dropdown" />
     </androidx.cardview.widget.CardView>
 
     <LinearLayout

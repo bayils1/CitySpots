@@ -12,13 +12,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("ALL")
@@ -27,7 +32,6 @@ public class Act_NewSpot extends AppCompatActivity {
     public Intent cameraIntent;
     ImageView cameraImage;
     EditText spotName;
-    EditText spotType;
     EditText spotTag;
     EditText spotLocation;
     Bitmap photo;
@@ -36,6 +40,12 @@ public class Act_NewSpot extends AppCompatActivity {
     Button photoButton;
     String errorMessage = "-1";
     DBHandler db;
+    Spinner spotType;
+    List<String> spotTypes = new ArrayList<String>();
+
+
+    
+    ArrayAdapter<String> typeAdapter;
     boolean imageTaken;
     byte[] byteArray;
     User currentUser;
@@ -50,9 +60,10 @@ public class Act_NewSpot extends AppCompatActivity {
         photoButton = this.findViewById(R.id.btnCamera);
         addSpot = this.findViewById(R.id.btnEdit);
         spotName = this.findViewById(R.id.txtSpotName);
-        spotType = this.findViewById(R.id.txtSpotType);
         spotTag = this.findViewById(R.id.txtSpotTag);
         spotLocation = this.findViewById(R.id.txtSpotLocation);
+
+
         currentUser = (User) getIntent().getSerializableExtra("currentUser");
         db = new DBHandler(this);
         photoButton.setOnClickListener(new View.OnClickListener() {
@@ -67,13 +78,38 @@ public class Act_NewSpot extends AppCompatActivity {
                 }
             }
         });
+
+        spotType = this.findViewById(R.id.spnType);
+        for (String defaultType : Global.defaultSpotTypes()){
+            spotTypes.add(defaultType);
+        }
+        try {
+            List<Type> userSpotTypes = db.getSpotTypes(currentUser.getUserID());
+            for (Type userType : userSpotTypes) {
+                spotTypes.add(userType.getTypeName());
+            }
+        } catch (Exception e) {
+        }
+        typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spotTypes);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spotType.setAdapter(typeAdapter);
+        spotType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         addSpot.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
                 if (spotName.getText().toString().isEmpty()) {
                     errorMessage = "Please enter spot name";
-                } else if (spotType.getText().toString().isEmpty()) {
+                } else if (spotType.getSelectedItem().toString().isEmpty()) {
                     errorMessage = "Please enter spot type";
                 } else if (spotTag.getText().toString().isEmpty()) {
                     errorMessage = "Please enter spot tag";
@@ -83,11 +119,11 @@ public class Act_NewSpot extends AppCompatActivity {
                     errorMessage = "Please take an Image";
                 } else {
                     errorMessage = "-1";
-                    Log.println(Log.DEBUG, "NewSpot", spotType.getText().toString());
-                    if (spotType.getText().toString().contains("Nature")) {
-                        spot = new NatureSpot(spotName.getText().toString(), spotTag.getText().toString(), spotType.getText().toString(), photo, spotLocation.getText().toString());
+                    Log.println(Log.DEBUG, "NewSpot", spotType.getSelectedItem().toString());
+                    if (spotType.getSelectedItem().toString().contains("Nature")) {
+                        spot = new NatureSpot(spotName.getText().toString(), spotTag.getText().toString(), spotType.getSelectedItem().toString(), photo, spotLocation.getText().toString());
                     } else
-                        spot = new Spot(spotName.getText().toString(), spotTag.getText().toString(), spotType.getText().toString(), photo, spotLocation.getText().toString());
+                        spot = new Spot(spotName.getText().toString(), spotTag.getText().toString(), spotType.getSelectedItem().toString(), photo, spotLocation.getText().toString());
 
                     try {
                         Log.println(Log.DEBUG, "NewSpot", spot.getSpotType());

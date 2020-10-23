@@ -108,6 +108,7 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="200dp"
         android:layout_height="40dp"
+        android:layout_marginTop="56dp"
         android:layout_marginBottom="20dp"
         android:background="@color/greyTheme"
         android:fontFamily="@font/open_sans_semibold"
@@ -116,7 +117,7 @@
         android:textSize="@dimen/buttonSize"
         app:layout_constraintBottom_toTopOf="@+id/btnRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtLoginPassword" />
 

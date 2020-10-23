@@ -32,13 +32,13 @@ public class Act_MainActivityLogin extends AppCompatActivity {
         loginButton = findViewById(R.id.btnLogin);
         registerButton = findViewById(R.id.btnRegister);
         Test = findViewById(R.id.button);
-        //db.createTestUser();
+        boolean runCreateTestUser = true;
 
-        //Manual Testing Test User
-        //Manual Testing Test User
-        if (!db.validUser("test")) {
+        if (runCreateTestUser){//(!db.validUser("test")) {
             db.createTestUser();
             Log.println(Log.DEBUG, "DB", "No test user existed");
+            Type testType = new Type("TestType", db.getUser("test","test").getUserID());
+            db.createSpotType(testType);
         } else
             Log.println(Log.DEBUG, "DB", "test user exists");
 

@@ -113,6 +113,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/yellowTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -121,13 +122,12 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:layout_marginEnd="1dp"
             android:layout_marginRight="1dp"
             android:fontFamily="serif-monospace"
+            android:text="@string/cameraSymbol"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="24sp"
-            tools:text="@string/cameraSymbol"
-            android:layout_marginEnd="1dp"
-            tools:ignore="RtlHardcoded" />
+            android:textSize="24sp" />
     </androidx.cardview.widget.CardView>
 
     <ImageView

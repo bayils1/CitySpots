@@ -24,6 +24,8 @@ public class Unit_UserTest {
     public String expectedPassword;
     public String testUserID;
     public String expectedTestUserID;
+    public String testDefaultType;
+    public String expectedDefaultType;
     public String[] userDefinition;
     public String[] testUserArrayValue;
     public User testUser;
@@ -40,8 +42,11 @@ public class Unit_UserTest {
         expectedPassword = "tp";
         testUserID = "tuid";
         expectedTestUserID = "tuid";
+        testDefaultType ="Type";
+        expectedDefaultType = "Type";
+
         userDefinition = Global.getUserDefinition();
-        testUserArrayValue = new String[]{testUserID, testFullName, testUsername, testPassword, testCity};
+        testUserArrayValue = new String[]{testUserID, testFullName, testUsername, testPassword, testCity, testDefaultType};
         testUser = new User();
     }
 
@@ -59,6 +64,7 @@ public class Unit_UserTest {
         assertEquals(expectedUsername, testUser.getUsername());
         assertEquals(expectedUsername, testUser.getUsername());
         assertEquals(expectedTestUserID, testUser.getUserID());
+        assertEquals(expectedDefaultType, testUser.getDefaultSpotFilter());
     }
 
     @After

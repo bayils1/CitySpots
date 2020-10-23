@@ -1,7 +1,6 @@
 package com.application.cityspots;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class User implements Serializable {
 
@@ -11,7 +10,7 @@ public class User implements Serializable {
     private String password;
     private String city;
     private String userID;
-    private List<Spot> spotList;
+    private String defaultSpotFilter;
 
 
     /*Constructors*/
@@ -23,9 +22,18 @@ public class User implements Serializable {
         this.username = un;
         this.password = p;
         this.city = c;
+        this.defaultSpotFilter = "Type";
     }
 
     /*Getters/Setters*/
+    public String getDefaultSpotFilter() {
+        return defaultSpotFilter;
+    }
+
+    public void setDefaultSpotFilter(String defaultSpotFilter) {
+        this.defaultSpotFilter = defaultSpotFilter;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -85,6 +93,10 @@ public class User implements Serializable {
             case "city":
                 this.city = value;
                 break;
+            case "spotFilter":
+                this.defaultSpotFilter = value;
+                break;
         }
     }
+
 }

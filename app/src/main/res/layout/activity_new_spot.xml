@@ -21,7 +21,7 @@
         android:textColorHint="@color/greyTheme"
         android:textColorLink="@color/redTheme"
         android:textCursorDrawable="@color/redTheme"
-        app:layout_constraintBottom_toTopOf="@+id/txtSpotType"
+        app:layout_constraintBottom_toTopOf="@+id/spnType"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,27 +49,6 @@
         app:layout_constraintTop_toBottomOf="@+id/txtSpotTag" />
 
     <EditText
-        android:id="@+id/txtSpotType"
-        android:layout_width="270dp"
-        android:layout_height="46dp"
-        android:ems="15"
-        android:fontFamily="@font/open_sans"
-        android:hint="@string/spot_type"
-        android:imeOptions="actionDone"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        android:singleLine="true"
-        android:textColorHighlight="@color/redTheme"
-        android:textColorHint="@color/greyTheme"
-        android:textColorLink="@color/redTheme"
-        android:textCursorDrawable="@color/redTheme"
-        app:layout_constraintBottom_toTopOf="@+id/txtSpotTag"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSpotName" />
-
-    <EditText
         android:id="@+id/txtSpotTag"
         android:layout_width="270dp"
         android:layout_height="46dp"
@@ -88,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSpotType" />
+        app:layout_constraintTop_toBottomOf="@+id/spnType" />
 
     <ImageView
         android:id="@+id/imgbg"
@@ -113,6 +92,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/redTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -121,12 +101,12 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:layout_marginEnd="1dp"
             android:layout_marginRight="1dp"
             android:fontFamily="serif-monospace"
             android:text="@string/cameraSymbol"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="24sp"
-            android:layout_marginEnd="1dp" />
+            android:textSize="24sp" />
     </androidx.cardview.widget.CardView>
 
     <ImageView
@@ -150,5 +130,16 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtSpotLocation" />
+
+    <Spinner
+        android:id="@+id/spnType"
+        style="@style/SpinnerTextViewItem"
+        android:layout_width="266dp"
+        android:layout_height="34dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtSpotTag"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSpotName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
