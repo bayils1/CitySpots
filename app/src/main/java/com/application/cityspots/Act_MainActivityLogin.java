@@ -91,7 +91,7 @@ public class Act_MainActivityLogin extends AppCompatActivity {
         );
 
         //OnClickListener - TEST BUTTON ONLY
-        //Test.setVisibility(View.INVISIBLE);
+        Test.setVisibility(View.INVISIBLE);
 
         Test.setOnClickListener(
                 new View.OnClickListener() {

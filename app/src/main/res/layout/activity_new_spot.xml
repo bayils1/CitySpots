@@ -90,7 +90,9 @@
             android:textColorHint="@color/greyTheme"
             android:textColorLink="@color/greyTheme"
             android:textSize="14sp"
-            android:typeface="normal" />
+            android:typeface="normal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="48dp" />
 
         <Button
             android:id="@+id/btnCamera"
@@ -108,7 +110,7 @@
         android:id="@+id/cameraImage"
         android:layout_width="285dp"
         android:layout_height="246dp"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/csicon"
         app:layout_constraintBottom_toTopOf="@+id/txtSpotName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

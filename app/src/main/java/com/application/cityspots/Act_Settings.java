@@ -25,6 +25,7 @@ public class Act_Settings extends AppCompatActivity {
     EditText city;
     Button update;
     Button updateSpotTypes;
+    Button cancel;
     Button updateLocationTypes;
     String errorMessage = "-1";
     DBHandler db;
@@ -42,6 +43,7 @@ public class Act_Settings extends AppCompatActivity {
         fullname = findViewById(R.id.txtFullName);
         city = findViewById(R.id.txtCity);
         update = findViewById(R.id.btnUpdate);
+        cancel = findViewById(R.id.btnCancel);
         updateSpotTypes = findViewById(R.id.btnEditSpotTypes);
         updateLocationTypes = findViewById(R.id.btnEditSpotLocations);
         spotFilter = findViewById(R.id.spnSpotFilter);
@@ -127,6 +129,15 @@ public class Act_Settings extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Act_Settings.this, Act_EditSpotLocations.class);
+                intent.putExtra("currentUser", currentUser);
+                startActivity(intent);
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Act_Settings.this, Act_Landing.class);
                 intent.putExtra("currentUser", currentUser);
                 startActivity(intent);
             }

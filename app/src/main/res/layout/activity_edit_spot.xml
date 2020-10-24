@@ -108,7 +108,7 @@
         android:id="@+id/cameraImage"
         android:layout_width="285dp"
         android:layout_height="246dp"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/csicon"
         app:layout_constraintBottom_toTopOf="@+id/txtSpotName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

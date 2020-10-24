@@ -87,7 +87,7 @@ public class Act_EditSpotTypes extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (db.validSpotTypeDelete(currentUser.getUserID(), newType.getTypeName())) {
+                        if (db.validSpotTypeDelete(currentUser.getUserID(), spotType.getSelectedItem().toString())) {
                             errorMessage = "-1";
                             Log.println(Log.DEBUG, "Valid Delete", "Yes");
                             db.deleteSpotType(newType.getTypeID());

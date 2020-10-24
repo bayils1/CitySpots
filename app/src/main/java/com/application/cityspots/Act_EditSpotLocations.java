@@ -87,7 +87,7 @@ public class Act_EditSpotLocations extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (db.validSpotLocationDelete(currentUser.getUserID(), newLocation.getLocationName())) {
+                        if (db.validSpotLocationDelete(currentUser.getUserID(), spotLocation.getSelectedItem().toString())) {
                             errorMessage = "-1";
                             Log.println(Log.DEBUG, "Valid Delete", "Yes");
                             db.deleteSpotLocation(newLocation.getLocationID());

@@ -72,12 +72,12 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private static final String createSpotTypeTable = "create table " + TABLE_SpotType +
             "(" + COLUMN_SpotTypeID + " integer primary key autoincrement, " +
-            COLUMN_SpotTypeName + " text not null unique, " +
+            COLUMN_SpotTypeName + " text not null, " +
             COLUMN_FKUserID + " text);";
 
     private static final String createSpotLocationTable = "create table " + TABLE_SpotLocation +
             "(" + COLUMN_SpotLocationID + " integer primary key autoincrement, " +
-            COLUMN_SpotLocationName + " text not null unique, " +
+            COLUMN_SpotLocationName + " text not null, " +
             COLUMN_FKUserID + " text);";
     //endregion
 
