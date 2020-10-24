@@ -69,7 +69,6 @@ public class Act_NewSpot extends AppCompatActivity {
         spotTag = this.findViewById(R.id.txtSpotTag);
 
 
-
         photoButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -143,9 +142,9 @@ public class Act_NewSpot extends AppCompatActivity {
         }
     }
 
-    public void intialiseSpinners(){
+    public void intialiseSpinners() {
         spotType = this.findViewById(R.id.spnType);
-        for (String defaultType : Global.defaultSpotTypes()){
+        for (String defaultType : Global.defaultSpotTypes()) {
             spotTypes.add(defaultType);
         }
         try {
@@ -169,7 +168,7 @@ public class Act_NewSpot extends AppCompatActivity {
             }
         });
         spotLocation = this.findViewById(R.id.spnLocation);
-        for (String defaultType : Global.defaultLocations()){
+        for (String defaultType : Global.defaultLocations()) {
             spotLocations.add(defaultType);
         }
         try {

@@ -11,9 +11,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class DBHandler extends SQLiteOpenHelper {
 
+    //region Database Column/Table Strings
     public static final String DATABASE_NAME = "CitySpots";
     public static final String TABLE_User = "User";
     public static final String COLUMN_UserID = "userID";
@@ -47,6 +47,9 @@ public class DBHandler extends SQLiteOpenHelper {
     //Uses
     //public static final String COLUMN_FKUserID = "fkUserID";
 
+    //endregion
+
+    //region Create Table Strings
     private static final String createUserTable = "create table " + TABLE_User +
             "(" + COLUMN_UserID + " integer primary key autoincrement, " +
             COLUMN_FullName + " text, " +
@@ -76,17 +79,16 @@ public class DBHandler extends SQLiteOpenHelper {
             "(" + COLUMN_SpotLocationID + " integer primary key autoincrement, " +
             COLUMN_SpotLocationName + " text not null unique, " +
             COLUMN_FKUserID + " text);";
+    //endregion
 
-    /*****************************************
-     Constructor
-     *****************************************/
+    //region Constructor
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    /*****************************************
-     OnCreate/Upgrade
-     *****************************************/
+    //endregion
+
+    //region OnCreate/Update
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.println(Log.DEBUG, "Create User Table", createUserTable);
@@ -104,12 +106,11 @@ public class DBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_SpotLocation);
         onCreate(sqLiteDatabase);
     }
+//endregion
 
+    //region User Functions
 
-    /*****************************************
-     User Functions
-     *****************************************/
-    //Create
+    /***************************************Create**************************************************/
     public void createUser(User newUser) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -141,7 +142,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //Read
+    /***************************************Read**************************************************/
 
     public boolean validUser(String username) {
         //noinspection UnusedAssignment
@@ -195,7 +196,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return returnUser;
     }
 
-    //Update
+    /***************************************Update**************************************************/
 
     public void updateUser(User user) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -208,13 +209,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.update(TABLE_User, values, where, whereArgs);
         db.close();
     }
+    //endregion
 
+    //region Spot Functions
 
-    /*****************************************
-     Spot Functions
-     *****************************************/
-
-    //Create
+    /***************************************Create**************************************************/
     public void createSpot(Spot newSpot, User currentUser) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -228,7 +227,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //Read
+    /***************************************Read**************************************************/
     public Spot getSpot(String spotID) {
         Spot returnSpot = new Spot();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -395,7 +394,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return returnSpotList;
     }
 
-    //Update
+    /***************************************Update**************************************************/
     public void updateSpot(Spot updateSpot) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -410,7 +409,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //Delete
+    /***************************************Delete**************************************************/
     public void deleteSpot(String spotID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String deleteStatement = "DELETE FROM " +
@@ -421,15 +420,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+//endregion
 
-    /*****************************************
-     Spot Location Functions
-     *****************************************/
-    //Create
-    //Read
-    //Update
-    //Delete
+    //region Spot Location Functions
 
+    /***************************************Create**************************************************/
     public void createSpotLocation(Location newSpotLocation) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -439,24 +434,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateSpotLocation(Location updateSpotLocation, String oldSpotLocation) {
-
-        List<Spot> userSpots = getUserSpotBySpotLocation(updateSpotLocation.getUserID(), oldSpotLocation);
-        for (Spot currentSpot : userSpots) {
-            currentSpot.setLocation(updateSpotLocation.getLocationName());
-            updateSpot(currentSpot);
-        }
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_SpotLocationName, updateSpotLocation.getLocationName());
-        values.put(COLUMN_FKUserID, updateSpotLocation.getUserID());
-        String where = COLUMN_SpotLocationID + " = ?";
-        String[] whereArgs = new String[]{updateSpotLocation.getLocationID()};
-        db.update(TABLE_SpotLocation, values, where, whereArgs);
-        db.close();
-    }
-
+    /***************************************Read**************************************************/
     public List<Location> getLocations(String userID) {
         List<Location> returnLocationList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -495,15 +473,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return valid == 0;
     }
 
-    public void deleteSpotLocation(String spotLocationID) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String deleteStatement = "DELETE FROM " +
-                TABLE_SpotLocation + " WHERE " +
-                COLUMN_SpotLocationID + " = '" +
-                spotLocationID + "';";
-        db.execSQL(deleteStatement);
-        db.close();
-    }
     public List<Location> getSpotLocations(String userID) {
         List<Location> returnSpotLocationList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -527,6 +496,36 @@ public class DBHandler extends SQLiteOpenHelper {
         return returnSpotLocationList;
     }
 
+    /***************************************Update**************************************************/
+    public void updateSpotLocation(Location updateSpotLocation, String oldSpotLocation) {
+
+        List<Spot> userSpots = getUserSpotBySpotLocation(updateSpotLocation.getUserID(), oldSpotLocation);
+        for (Spot currentSpot : userSpots) {
+            currentSpot.setLocation(updateSpotLocation.getLocationName());
+            updateSpot(currentSpot);
+        }
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SpotLocationName, updateSpotLocation.getLocationName());
+        values.put(COLUMN_FKUserID, updateSpotLocation.getUserID());
+        String where = COLUMN_SpotLocationID + " = ?";
+        String[] whereArgs = new String[]{updateSpotLocation.getLocationID()};
+        db.update(TABLE_SpotLocation, values, where, whereArgs);
+        db.close();
+    }
+
+    /***************************************Delete**************************************************/
+    public void deleteSpotLocation(String spotLocationID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String deleteStatement = "DELETE FROM " +
+                TABLE_SpotLocation + " WHERE " +
+                COLUMN_SpotLocationID + " = '" +
+                spotLocationID + "';";
+        db.execSQL(deleteStatement);
+        db.close();
+    }
+
     public boolean validSpotLocation(Location spotLocation) {
         //noinspection UnusedAssignment
         int valid = 0;
@@ -540,10 +539,11 @@ public class DBHandler extends SQLiteOpenHelper {
         Log.println(Log.DEBUG, "Valid Count", valid + "");
         return valid == 0;
     }
-    /*****************************************
-     Spot Type Functions
-     *****************************************/
-    //Create
+    //endregion
+
+    //region Spot Type Functions
+
+    /***************************************Create**************************************************/
     public void createSpotType(Type newSpotType) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -553,7 +553,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //Read
+    /***************************************Read**************************************************/
     public List<Type> getSpotTypes(String userID) {
         List<Type> returnSpotTypeList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -578,7 +578,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return returnSpotTypeList;
     }
 
-    //Update
+    /***************************************Update**************************************************/
     public void updateSpotType(Type updateSpotType, String oldSpotType) {
 
         List<Spot> userSpots = getUserSpotBySpotType(updateSpotType.getUserID(), oldSpotType);
@@ -625,7 +625,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return valid == 0;
     }
 
-    //Delete
+    /***************************************Delete**************************************************/
     public void deleteSpotType(String spotTypeID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String deleteStatement = "DELETE FROM " +
@@ -635,5 +635,5 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(deleteStatement);
         db.close();
     }
-
+    //endregion
 }

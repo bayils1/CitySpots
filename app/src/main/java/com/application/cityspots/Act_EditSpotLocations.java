@@ -125,7 +125,7 @@ public class Act_EditSpotLocations extends AppCompatActivity {
                                 errorMessage = "-1";
                                 newLocation = new Location(editSpotLocation.getText().toString(), currentUser.getUserID());
                                 Log.println(Log.DEBUG, "Edited Location", "New Location");
-                                if(db.validSpotLocation(newLocation)){
+                                if (db.validSpotLocation(newLocation)) {
                                     db.createSpotLocation(newLocation);
                                     Intent intent = new Intent(Act_EditSpotLocations.this, Act_Settings.class);
                                     intent.putExtra("currentUser", currentUser);
@@ -134,8 +134,7 @@ public class Act_EditSpotLocations extends AppCompatActivity {
                                     View toastView = toast.getView();
                                     toastView.setBackgroundColor(Color.parseColor("#779933"));
                                     toast.show();
-                                }
-                                else{
+                                } else {
                                     errorMessage = "Spot Location Already Exists!";
                                     Log.println(Log.DEBUG, "Edited Location", "Location Already Exists");
                                 }
@@ -146,7 +145,7 @@ public class Act_EditSpotLocations extends AppCompatActivity {
 
                                 newLocation.setLocationName(editSpotLocation.getText().toString());
                                 Log.println(Log.DEBUG, "Edited Location", newLocation.getLocationID() + " " + newLocation.getLocationName());
-                                if(db.validSpotLocation(newLocation)){
+                                if (db.validSpotLocation(newLocation)) {
 
                                     db.updateSpotLocation(newLocation, oldLocationName);
                                     Intent intent = new Intent(Act_EditSpotLocations.this, Act_Landing.class);
@@ -156,8 +155,7 @@ public class Act_EditSpotLocations extends AppCompatActivity {
                                     View toastView = toast.getView();
                                     toastView.setBackgroundColor(Color.parseColor("#779933"));
                                     toast.show();
-                                }
-                                else{
+                                } else {
                                     errorMessage = "Spot Location Already Exists!";
                                     Log.println(Log.DEBUG, "Edited Location", "Location Already Exists");
                                 }

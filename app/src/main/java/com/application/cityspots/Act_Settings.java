@@ -43,7 +43,7 @@ public class Act_Settings extends AppCompatActivity {
         city = findViewById(R.id.txtCity);
         update = findViewById(R.id.btnUpdate);
         updateSpotTypes = findViewById(R.id.btnEditSpotTypes);
-updateLocationTypes = findViewById(R.id.btnEditSpotLocations);
+        updateLocationTypes = findViewById(R.id.btnEditSpotLocations);
         spotFilter = findViewById(R.id.spnSpotFilter);
         fullname.setText(currentUser.getFullName());
         city.setText(currentUser.getCity());
@@ -115,7 +115,7 @@ updateLocationTypes = findViewById(R.id.btnEditSpotLocations);
                     }
                 });
 
-        updateSpotTypes.setOnClickListener( new View.OnClickListener() {
+        updateSpotTypes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Act_Settings.this, Act_EditSpotTypes.class);
@@ -123,7 +123,7 @@ updateLocationTypes = findViewById(R.id.btnEditSpotLocations);
                 startActivity(intent);
             }
         });
-        updateLocationTypes.setOnClickListener( new View.OnClickListener() {
+        updateLocationTypes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Act_Settings.this, Act_EditSpotLocations.class);

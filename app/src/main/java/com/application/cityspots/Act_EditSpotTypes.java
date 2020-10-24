@@ -125,7 +125,7 @@ public class Act_EditSpotTypes extends AppCompatActivity {
                                 errorMessage = "-1";
                                 newType = new Type(editSpotType.getText().toString(), currentUser.getUserID());
                                 Log.println(Log.DEBUG, "Edited Type", "New Type");
-                                if(db.validSpotType(newType)){
+                                if (db.validSpotType(newType)) {
                                     db.createSpotType(newType);
                                     Intent intent = new Intent(Act_EditSpotTypes.this, Act_Settings.class);
                                     intent.putExtra("currentUser", currentUser);
@@ -134,8 +134,7 @@ public class Act_EditSpotTypes extends AppCompatActivity {
                                     View toastView = toast.getView();
                                     toastView.setBackgroundColor(Color.parseColor("#779933"));
                                     toast.show();
-                                }
-                                else{
+                                } else {
                                     errorMessage = "Spot Type Already Exists!";
                                     Log.println(Log.DEBUG, "Edited Type", "Type Already Exists");
                                 }
@@ -145,7 +144,7 @@ public class Act_EditSpotTypes extends AppCompatActivity {
                                 String oldTypeName = spotType.getSelectedItem().toString();
                                 newType.setTypeName(editSpotType.getText().toString());
                                 Log.println(Log.DEBUG, "Edited Type", newType.getTypeID() + " " + newType.getTypeName());
-                                if(db.validSpotType(newType)){
+                                if (db.validSpotType(newType)) {
                                     db.updateSpotType(newType, oldTypeName);
                                     Intent intent = new Intent(Act_EditSpotTypes.this, Act_Landing.class);
                                     intent.putExtra("currentUser", currentUser);
@@ -154,8 +153,7 @@ public class Act_EditSpotTypes extends AppCompatActivity {
                                     View toastView = toast.getView();
                                     toastView.setBackgroundColor(Color.parseColor("#779933"));
                                     toast.show();
-                                }
-                                else{
+                                } else {
                                     errorMessage = "Spot Type Already Exists!";
                                     Log.println(Log.DEBUG, "Edited Type", "Type Already Exists");
                                 }

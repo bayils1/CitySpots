@@ -5,11 +5,14 @@ public class Type {
     private String TypeName;
     private String UserID;
 
-    public Type(){}
-    public Type(String TypeName, String userID){
+    public Type() {
+    }
+
+    public Type(String TypeName, String userID) {
         this.TypeName = TypeName;
         this.UserID = userID;
     }
+
     public String getTypeID() {
         return TypeID;
     }

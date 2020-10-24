@@ -11,7 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,6 +29,8 @@ public class Unit_DBHandlerTest {
     DBHandler databaseMock;
     User testUser;
     Spot testSpot;
+    List<Location> testLocations;
+    List<Type> testTypes;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -78,11 +84,27 @@ public class Unit_DBHandlerTest {
     public void getSpotCountTest()  {
 
         databaseMock = mock(DBHandler.class);
-
         when(databaseMock.spotCount(username)).thenReturn(2);
         assertEquals(2,databaseMock.spotCount(username));
     }
 
+    @Test
+    public void testGetSpotLocations()  {
+        databaseMock = mock(DBHandler.class);
+        testLocations = new ArrayList<>();
+        testLocations.add(mock(Location.class));
+        when(databaseMock.getSpotLocations("1")).thenReturn(testLocations);
+        assertEquals(testLocations,databaseMock.getSpotLocations("1"));
+    }
+
+    @Test
+    public void testGetSpotTypes()  {
+        databaseMock = mock(DBHandler.class);
+        testTypes = new ArrayList<>();
+        testTypes.add(mock(Type.class));
+        when(databaseMock.getSpotTypes("1")).thenReturn(testTypes);
+        assertEquals(testTypes,databaseMock.getSpotTypes("1"));
+    }
 
     @After
     public void tearDown() {

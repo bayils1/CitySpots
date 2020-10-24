@@ -171,9 +171,10 @@ public class Act_EditSpot extends AppCompatActivity {
             }
         }
     }
-    public void intialiseSpinners(){
+
+    public void intialiseSpinners() {
         spotType = this.findViewById(R.id.spnType);
-        for (String defaultType : Global.defaultSpotTypes()){
+        for (String defaultType : Global.defaultSpotTypes()) {
             spotTypesSpinner.add(defaultType);
         }
         try {
@@ -197,14 +198,14 @@ public class Act_EditSpot extends AppCompatActivity {
             }
         });
 
-        for (int i=0;i<spotType.getCount();i++){
-            if (spotType.getItemAtPosition(i).toString().equalsIgnoreCase(spot.getSpotType())){
+        for (int i = 0; i < spotType.getCount(); i++) {
+            if (spotType.getItemAtPosition(i).toString().equalsIgnoreCase(spot.getSpotType())) {
                 spotType.setSelection(i);
             }
         }
 
         spotLocation = this.findViewById(R.id.spnLocation);
-        for (String defaultType : Global.defaultLocations()){
+        for (String defaultType : Global.defaultLocations()) {
             spotLocations.add(defaultType);
         }
         try {
@@ -227,8 +228,8 @@ public class Act_EditSpot extends AppCompatActivity {
 
             }
         });
-        for (int i=0;i<spotLocation.getCount();i++){
-            if (spotLocation.getItemAtPosition(i).toString().equalsIgnoreCase(spot.getLocation())){
+        for (int i = 0; i < spotLocation.getCount(); i++) {
+            if (spotLocation.getItemAtPosition(i).toString().equalsIgnoreCase(spot.getLocation())) {
                 spotLocation.setSelection(i);
             }
         }

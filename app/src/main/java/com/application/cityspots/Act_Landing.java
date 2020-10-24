@@ -78,10 +78,9 @@ public class Act_Landing extends AppCompatActivity {
 
         );
 
-        if(currentUser.getDefaultSpotFilter().equalsIgnoreCase("Type")){
+        if (currentUser.getDefaultSpotFilter().equalsIgnoreCase("Type")) {
             spinnerArray = db.getUserSpotTypes(currentUser.getUserID());
-        }
-        else{
+        } else {
             spinnerArray = db.getUserLocationTypes(currentUser.getUserID());
         }
 
@@ -105,10 +104,9 @@ public class Act_Landing extends AppCompatActivity {
                     parentLayout.addView(text);
                 } else {
                     parentLayout.removeAllViews();
-                    if(currentUser.getDefaultSpotFilter().equalsIgnoreCase("Type")) {
+                    if (currentUser.getDefaultSpotFilter().equalsIgnoreCase("Type")) {
                         spotList = db.getUserSpotBySpotType(currentUser.getUserID(), spotType.getSelectedItem().toString());
-                    }
-                    else{
+                    } else {
                         spotList = db.getUserSpotBySpotLocation(currentUser.getUserID(), spotType.getSelectedItem().toString());
                     }
                     Spot s = new Spot(spotList.get(0));

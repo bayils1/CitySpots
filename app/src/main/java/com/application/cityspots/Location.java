@@ -5,11 +5,15 @@ public class Location {
     private String LocationID;
     private String LocationName;
     private String UserID;
-    public Location(){}
-    public Location(String LocationName, String userID){
+
+    public Location() {
+    }
+
+    public Location(String LocationName, String userID) {
         this.LocationName = LocationName;
         this.UserID = userID;
     }
+
     public String getLocationID() {
         return LocationID;
     }
